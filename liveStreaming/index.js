@@ -24,6 +24,7 @@ io.on('connection', function(socket) {
 
   sockets[socket.id] = socket;
   console.log("Total clients connected : ", Object.keys(sockets).length);
+  socket.emit('connection');
 
   socket.on('disconnect', function() {
     delete sockets[socket.id];
