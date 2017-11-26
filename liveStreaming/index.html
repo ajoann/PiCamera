@@ -26,8 +26,8 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
   var socket = io();
-  $('.start').show();
-  $('.stop').hide();
+  // $('.start').show();
+  // $('.stop').hide();
 
   socket.on('liveStream', function(url) {
     $('#stream').attr('src', url);
@@ -42,7 +42,7 @@
     $('.stop').show();
   }
 
-  function startStream() {
+  function stopStream() {
     socket.emit('stop-stream');
     $('.stop').hide();
     $('.start').show();
@@ -58,7 +58,7 @@
   <hr>
   <button type="button" id="" class="btn btn-info start" onclick="startStream()">Start Camera</button>
 
-  <button type="button" id="" class="btn btn-info stop" onclick="stopStream()">Start Camera</button>
+  <button type="button" id="" class="btn btn-info stop" onclick="stopStream()">Stop Camera</button>
 
   <div class="row">
     <img src="" id="stream">
