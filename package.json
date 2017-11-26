@@ -2,7 +2,7 @@
   "name": "pi_camera_live_streaming",
   "version": "1.0.0",
   "description": "Project for live streaming video (mjpeg's) from Pi Camera",
-  "main": "index.js",
+  "main": "liveStreaming/index.js",
   "scripts": {
     "test": "npm test"
   },
