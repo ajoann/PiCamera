@@ -26,6 +26,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
   var socket = io();
+  var pic;
 
   socket.on('connection', function() {
     console.log('connected');
@@ -35,7 +36,10 @@
 
   socket.on('liveStream', function(url) {
     console.log("recieved startStream w/ url", url);
-    $('#stream').attr('src', url);
+    pic = url.split("?")[0];
+    $('#stream').attr('src', pic);
+
+    // $('#stream').attr('src', url);
     // $('.start').show();
     // $('#stop').hide();
 
@@ -44,7 +48,7 @@
   socket.on('stopStream', function(url) {
     if (url) {
       console.log("recieved stopStream w/ url", url);
-      $('#stream').attr('src', url);
+      $('#stream').attr('src', url.split("?")[0]);
     }
 
     // $('.start').show();
