@@ -51,8 +51,8 @@ http.listen(3000, function() {
 });
 
 function stopStreaming() {
-  console.log("going to stop proc:", proc);
-  if (Object.keys(sockets).length == 0) {
+  console.log("going to stop proc:", proc.spawnargs);
+  // if (Object.keys(sockets).length == 0) {
     app.set('watchingFile', false);
     if (proc) proc.kill();
     fs.unwatchFile('./stream/image_stream.jpg');
@@ -60,7 +60,7 @@ function stopStreaming() {
 
     io.sockets.emit('stopStream', url);
 
-  }
+  // }
 }
 
 function startStreaming(io) {
