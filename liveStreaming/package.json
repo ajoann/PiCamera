@@ -1,0 +1,23 @@
+{
+  "name": "pi_camera_live_streaming",
+  "version": "1.0.0",
+  "description": "Project for live streaming video (mjpeg's) from Pi Camera",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajoann/PiCamera.git"
+  },
+  "author": "Amanda Joann Hansen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajoann/PiCamera/issues"
+  },
+  "homepage": "https://github.com/ajoann/PiCamera#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}
