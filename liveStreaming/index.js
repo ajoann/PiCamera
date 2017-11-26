@@ -12,7 +12,9 @@ var proc;
 var url;
 
 console.log("we in dir",__dirname);
-app.use('/', express.static(path.join(__dirname, 'stream')));
+var file_path = path.join(__dirname, 'stream/');
+console.log("pics should be in", file_path);
+app.use('/', express.static(file_path));
 
 
 app.get('/', function(req, res) {
