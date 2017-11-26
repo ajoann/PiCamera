@@ -30,7 +30,19 @@
   // $('.stop').hide();
 
   socket.on('liveStream', function(url) {
+    console.log("recieved startStream w/ url", url);
     $('#stream').attr('src', url);
+    // $('.start').show();
+    // $('#stop').hide();
+
+  });
+
+  socket.on('stopStream', function(url) {
+    if (url) {
+      console.log("recieved stopStream w/ url", url);
+      $('#stream').attr('src', url);
+    }
+
     // $('.start').show();
     // $('#stop').hide();
 

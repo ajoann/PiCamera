@@ -9,6 +9,7 @@ var path = require('path');
 
 var spawn = require('child_process').spawn;
 var proc;
+var url;
 
 app.use('/', express.static(path.join(__dirname, 'stream')));
 
@@ -55,7 +56,10 @@ function stopStreaming() {
     app.set('watchingFile', false);
     if (proc) proc.kill();
     fs.unwatchFile('./stream/image_stream.jpg');
-    console.log("stopped streaming");
+    console.log("stopping streaming");
+
+    io.sockets.emit('stopStream', url);
+
   }
 }
 
@@ -63,7 +67,9 @@ function startStreaming(io) {
   console.log("starting streaming");
 
   if (app.get('watchingFile')) {
-    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
+    console.log("starting streaming with url", url);
+    url = 'image_stream.jpg?_t=' + (Math.random() * 100000);
+    io.sockets.emit('liveStream', url);
     return;
   }
 
@@ -75,7 +81,9 @@ function startStreaming(io) {
   app.set('watchingFile', true);
 
   fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
-    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
+    console.log("starting streaming with url", url);
+    url = 'image_stream.jpg?_t=' + (Math.random() * 100000);
+    io.sockets.emit('liveStream', url);
   })
 
 }
