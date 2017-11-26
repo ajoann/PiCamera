@@ -84,7 +84,7 @@ function startStreaming(io) {
 
   app.set('watchingFile', true);
 
-  fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
+  fs.watchFile('./liveStreaming/stream/image_stream.jpg', function(current, previous) {
     console.log("2 starting streaming with url", url);
     url = 'image_stream.jpg?_t=' + (Math.random() * 100000);
     io.sockets.emit('liveStream', url);
