@@ -69,7 +69,7 @@ function startStreaming(io) {
 
   if (app.get('watchingFile')) {
     console.log("starting streaming with url", url);
-    url = 'image_stream.jpg?_t=' + (Math.random() * 100000);
+    url = 'image_stream.jpg'/*?_t=' + (Math.random() * 100000)*/;
     io.sockets.emit('liveStream', url);
     return;
   }
@@ -83,7 +83,7 @@ function startStreaming(io) {
 
   fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
     console.log("starting streaming with url", url);
-    url = 'image_stream.jpg?_t=' + (Math.random() * 100000);
+    url = 'image_stream.jpg'/*?_t=' + (Math.random() * 100000)*/;
     io.sockets.emit('liveStream', url);
   })
 
