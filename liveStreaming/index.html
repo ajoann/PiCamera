@@ -28,6 +28,7 @@
   var socket = io();
 
   socket.on('connection', function() {
+    console.log('connected');
     $('.start').show();
     $('#stop').hide();
   });
