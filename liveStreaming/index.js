@@ -11,6 +11,7 @@ var spawn = require('child_process').spawn;
 var proc;
 var url;
 
+console.log("we in dir",__dirname);
 app.use('/', express.static(path.join(__dirname, 'stream')));
 
 
@@ -69,7 +70,7 @@ function startStreaming(io) {
 
   if (app.get('watchingFile')) {
     console.log("starting streaming with url", url);
-    url = 'stream/image_stream.jpg'/*?_t=' + (Math.random() * 100000)*/;
+    url = 'image_stream.jpg?_t=' + (Math.random() * 100000);
     io.sockets.emit('liveStream', url);
     return;
   }
@@ -83,7 +84,7 @@ function startStreaming(io) {
 
   fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
     console.log("starting streaming with url", url);
-    url = 'stream/image_stream.jpg'/*?_t=' + (Math.random() * 100000)*/;
+    url = 'image_stream.jpg?_t=' + (Math.random() * 100000);
     io.sockets.emit('liveStream', url);
   })
 
