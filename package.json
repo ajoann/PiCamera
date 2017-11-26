@@ -4,7 +4,8 @@
   "description": "Project for live streaming video (mjpeg's) from Pi Camera",
   "main": "liveStreaming/index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start": "node liveStreaming/index.js"
   },
   "repository": {
     "type": "git",
