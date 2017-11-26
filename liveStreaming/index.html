@@ -26,26 +26,39 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
   var socket = io();
+  $('.start').show();
+  $('.stop').hide();
+
   socket.on('liveStream', function(url) {
     $('#stream').attr('src', url);
     $('.start').hide();
+    $('.stop').show();
+
   });
 
   function startStream() {
     socket.emit('start-stream');
     $('.start').hide();
+    $('.stop').show();
+  }
+
+  function startStream() {
+    socket.emit('stop-stream');
+    $('.stop').hide();
+    $('.start').show();
   }
   </script>
 </head>
 
 <body class="container">
-  <h1 class="text-center">My Aquarium
+  <h1 class="text-center">My Dorm Aquarium
     <small>Powered by PI</small>
   </h1>
 
   <hr>
-
   <button type="button" id="" class="btn btn-info start" onclick="startStream()">Start Camera</button>
+
+  <button type="button" id="" class="btn btn-info stop" onclick="stopStream()">Start Camera</button>
 
   <div class="row">
     <img src="" id="stream">
