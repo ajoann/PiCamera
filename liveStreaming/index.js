@@ -51,7 +51,7 @@ io.on('connection', function(socket) {
 });
 
 http.listen(3000, function() {
-  console.log('listening on *:3000');
+  console.log('server started... listening on port 3000');
 });
 
 function stopStreaming() {
@@ -71,7 +71,7 @@ function startStreaming(io) {
   console.log("starting streaming");
 
   if (app.get('watchingFile')) {
-    console.log("starting streaming with url", url);
+    console.log("1 starting streaming with url", url);
     url = 'image_stream.jpg?_t=' + (Math.random() * 100000);
     io.sockets.emit('liveStream', url);
     return;
@@ -85,7 +85,7 @@ function startStreaming(io) {
   app.set('watchingFile', true);
 
   fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
-    console.log("starting streaming with url", url);
+    console.log("2 starting streaming with url", url);
     url = 'image_stream.jpg?_t=' + (Math.random() * 100000);
     io.sockets.emit('liveStream', url);
   })
