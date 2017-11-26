@@ -38,7 +38,7 @@
   socket.on('liveStream', function(url) {
     console.log("recieved startStream w/ url", url);
     pic = url.split("?")[0];
-    $('#stream').attr('src', "./stream/image_stream.jpg");
+    $('#stream').attr('src', "./image_stream.jpg");
 
     // $('#stream').attr('src', url);
     // $('.start').show();
@@ -49,7 +49,7 @@
   socket.on('stopStream', function(url) {
     if (url) {
       console.log("recieved stopStream w/ url", url);
-      $('#stream').attr('src', "./stream/image_stream.jpg");
+      $('#stream').attr('src', "./image_stream.jpg");
     }
 
     // $('.start').show();
