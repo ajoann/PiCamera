@@ -48,7 +48,7 @@ io.on('connection', function(socket) {
     stopStreaming();
   });
 
-}); 
+});
 
 http.listen(3000, function() {
   console.log('server started... listening on port 3000');

@@ -48,11 +48,11 @@ http.listen(3000, function() {
 });
 
 function stopStreaming() {
-  if (Object.keys(sockets).length == 0) {
+  // if (Object.keys(sockets).length == 0) {
     app.set('watchingFile', false);
     if (proc) proc.kill();
     fs.unwatchFile('./stream/image_stream.jpg');
-  }
+  // }
 }
 
 function startStreaming(io) {
