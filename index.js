@@ -72,9 +72,9 @@ function startStreaming(io) {
 
   // set interval to go every 1 sec
   var intrvl = setInterval(function() {
+    insertPicIntoGDrive("./stream/image_stream.jpg", i);
     console.log("emitting again");
     io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-    insertPicIntoGDrive("./stream/image_stream.jpg", i);
     i++;
   }, 1000);
   // set timeout to clear interval after 10 seconds.
