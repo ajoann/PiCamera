@@ -37,6 +37,10 @@ io.on('connection', function(socket) {
     startStreaming(io);
   });
 
+  socket.on('stop-stream', function() {
+    stopStreaming();
+  });
+
 });
 
 http.listen(3000, function() {
