@@ -26,15 +26,37 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
   var socket = io();
+
+  socket.on('connection', function() {
+    console.log('connected');
+    $('.start').show();
+    $('#stop').hide();
+  });
+
   socket.on('liveStream', function(url) {
     $('#stream').attr('src', url);
-    $('.start').hide();
+    // $('.start').hide();
+  });
+
+  socket.on('stopStream', function(url) {
+    if (url) {
+      console.log("recieved stopStream w/ url", url);
+      $('#stream').attr('src', "./image_stream.jpg");
+    }
   });
 
   function startStream() {
     socket.emit('start-stream');
     $('.start').hide();
+    $('#stop').show();
   }
+
+  function stopStream() {
+    socket.emit('stop-stream');
+    $('#stop').hide();
+    $('.start').show();
+  }
+
   </script>
 </head>
 
@@ -46,6 +68,7 @@
   <hr>
 
   <button type="button" id="" class="btn btn-info start" onclick="startStream()">Start Camera</button>
+  <button type="button" id="stop" class="btn btn-info stop" onclick="stopStream()">Stop Camera</button>
 
   <div class="row">
     <img src="" id="stream">
