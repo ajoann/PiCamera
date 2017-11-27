@@ -209,8 +209,8 @@ function insertPicIntoGDrive(pic, i) {
     var drive = google.drive('v2');
     // var fs = require('fs');
 
-    pic = pic.split('/');
-    picName = pic[pic.length-1] + i;
+    picName = pic.split('/');
+    picName = picName[picName.length-1] + i;
     console.log("pic name: ", picName);
     var fileMetadata = {
       name: picName,
