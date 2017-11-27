@@ -62,18 +62,21 @@ function startStreaming(io) {
     return;
   }
 
-  var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "10000", "-tl", "100"];
+  var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "10000", "-tl", "1000"];
   proc = spawn('raspistill', args);
 
   console.log('Watching for changes...');
 
   app.set('watchingFile', true);
+  var i = 0;
 
   // set interval to go every 1 sec
   var intrvl = setInterval(function() {
     console.log("emitting again");
     io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-  }, 100);
+    insertPicIntoGDrive("./stream/image_stream.jpg", i);
+    i++;
+  }, 1000);
   // set timeout to clear interval after 10 seconds.
   setTimeout(function () {
     console.log("clearing interval");
@@ -86,18 +89,19 @@ function startStreaming(io) {
 
 }
 
-// code to save pic to google drive:
-// THIS CODE IS ADAPTED FROM GOOGLE'S TUTORIALs:
-// https://developers.google.com/drive/v2/web/manage-uploads
-// https://github.com/google/google-api-nodejs-client#oauth2-client
-var readline = require('readline');
-var google = require('googleapis');
-var googleAuth = require('google-auth-library');
-var axios = require('axios');
-// var ImageModel = require('./models/models').ImageModel;
-// var axios = require('axios');
+function insertPicIntoGDrive(pic, i) {
+  // code to save pic to google drive:
+  // THIS CODE IS ADAPTED FROM GOOGLE'S TUTORIALs:
+  // https://developers.google.com/drive/v2/web/manage-uploads
+  // https://github.com/google/google-api-nodejs-client#oauth2-client
+  var readline = require('readline');
+  var google = require('googleapis');
+  var googleAuth = require('google-auth-library');
+  var axios = require('axios');
+  // var ImageModel = require('./models/models').ImageModel;
+  // var axios = require('axios');
 
-// If modifying these scopes, delete your previously saved credentials
+  // If modifying these scopes, delete your previously saved credentials
   // at ~/.credentials/drive-nodejs-quickstart.json
   const MY_PICTURE_FOLDER = '0B7knwYcCq901X2l1NXZZblB0blU';
 
@@ -142,6 +146,7 @@ var axios = require('axios');
       }
     });
   }
+
   /**
     * Get and store new token after prompting for user authorization, and then
     * execute the given callback with the authorized OAuth2 client.
@@ -175,87 +180,90 @@ var axios = require('axios');
       });
     });
   }
-/**
-  * Store token to disk be used in later program executions.
-  *
-  * @param {Object} token The token to store to disk.
-  */
-function storeToken(token) {
-  try {
-    console.log('6');
-    fs.mkdirSync(TOKEN_DIR);
-  } catch (err) {
-    if (err.code != 'EEXIST') {
-      throw err;
+  /**
+    * Store token to disk be used in later program executions.
+    *
+    * @param {Object} token The token to store to disk.
+    */
+  function storeToken(token) {
+    try {
+      console.log('6');
+      fs.mkdirSync(TOKEN_DIR);
+    } catch (err) {
+      if (err.code != 'EEXIST') {
+        throw err;
+      }
     }
+    console.log('7');
+    fs.writeFile(TOKEN_PATH, JSON.stringify(token));
+    console.log('Token stored to ' + TOKEN_PATH);
   }
-  console.log('7');
-  fs.writeFile(TOKEN_PATH, JSON.stringify(token));
-  console.log('Token stored to ' + TOKEN_PATH);
-}
 
-/**
-  * Lists the names and IDs of up to 10 files.
-  *
-  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
-  */
-function insertPicture(auth) {
+  /**
+    * Lists the names and IDs of up to 10 files.
+    *
+    * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+    */
+  function insertPicture(auth) {
 
-  var drive = google.drive('v2');
-  // var fs = require('fs');
+    var drive = google.drive('v2');
+    // var fs = require('fs');
 
-  var fileMetadata = {
-    name: 'stream_image.jpg',
-    mimeType: 'image/jpg',
-    title: 'stream_image.jpg',
-    parents: MY_PICTURE_FOLDER ? [{id: MY_PICTURE_FOLDER}] : []
-  };
+    picName = pic + i;
+    console.log("pic name: ", picName);
+    var fileMetadata = {
+      name: picName,
+      mimeType: 'image/jpg',
+      title: picName,
+      parents: MY_PICTURE_FOLDER ? [{id: MY_PICTURE_FOLDER}] : []
+    };
 
-  var media = {
-    mimeType: 'image/jpg',
-    body: fs.createReadStream('./stream/image_stream.jpg')
-  };
+    var media = {
+      mimeType: 'image/jpg',
+      body: fs.createReadStream(pic)
+    };
 
-  drive.files.insert({
-    resource: fileMetadata,
-    media: media,
-    auth: auth,
-    fields: 'id',
-    title: fileMetadata.title
-  }, function(err, file) {
-    if(err) {
-      console.log(err);
-      return;
-    } else {
-      console.log("inserted file", file);
-      drive.files.get({
-         fileId: file.id,
-         auth: auth,
-      }, function (err, stuff) {
-        if(err) {
-          console.log(err);
-          return;
-        }
-        console.log("got file", stuff);
-        // else {
-        //   // console.log('RESPONSE: ', stuff);
-        //   sendMessage(stuff.embedLink);
-        //   var image = new ImageModel({
-        //     link : stuff.embedLink
-        //   });
-        //   axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')
-        //   .then( resp => {
-        //     image.description = resp.data.weather[0].description;
-        //     image.min =  resp.data.main.temp_min-273.15;
-        //     image.max =  resp.data.main.temp_max-273.15;
-        //
-        //     image.save();
-        //   })
-          // .catch( err => {
-          //   console.log (':( error', err);
-          // })
-        // }
-      });
-    }
-  });
+    drive.files.insert({
+      resource: fileMetadata,
+      media: media,
+      auth: auth,
+      fields: 'id',
+      title: fileMetadata.title
+    }, function(err, file) {
+      if(err) {
+        console.log(err);
+        return;
+      } else {
+        console.log("inserted file", file);
+        drive.files.get({
+           fileId: file.id,
+           auth: auth,
+        }, function (err, stuff) {
+          if(err) {
+            console.log(err);
+            return;
+          }
+          console.log("got file", stuff.id);
+          // else {
+          //   // console.log('RESPONSE: ', stuff);
+          //   sendMessage(stuff.embedLink);
+          //   var image = new ImageModel({
+          //     link : stuff.embedLink
+          //   });
+          //   axios.get('http://api.openweathermap.org/data/2.5/weather?q=SanFrancisco&APPID=89fdd5afd3758c1feb06e06a64c55260')
+          //   .then( resp => {
+          //     image.description = resp.data.weather[0].description;
+          //     image.min =  resp.data.main.temp_min-273.15;
+          //     image.max =  resp.data.main.temp_max-273.15;
+          //
+          //     image.save();
+          //   })
+            // .catch( err => {
+            //   console.log (':( error', err);
+            // })
+          // }
+        });
+      }
+    });
+  }
 }
