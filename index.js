@@ -263,7 +263,7 @@ function insertPicIntoGDrive(pic, i) {
             //   console.log (':( error', err);
             // })
           // }
-        });
+        // });
       }
     });
   }
