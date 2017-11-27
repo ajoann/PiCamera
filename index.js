@@ -62,7 +62,7 @@ function startStreaming(io) {
     return;
   }
 
-  var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "10000", "-tl", "1000"];
+  var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "10000", "-tl", "100"];
   proc = spawn('raspistill', args);
 
   console.log('Watching for changes...');
@@ -73,7 +73,7 @@ function startStreaming(io) {
   var intrvl = setInterval(function() {
     console.log("emitting again");
     io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-  }, 1*1000);
+  }, 100);
   // set timeout to clear interval after 10 seconds.
   setTimeout(function () {
     console.log("clearing interval");
