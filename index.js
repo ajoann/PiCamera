@@ -69,8 +69,19 @@ function startStreaming(io) {
 
   app.set('watchingFile', true);
 
-  fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
+  // set interval to go every 1 sec
+  var intrvl = setInterval(function() {
+    console.log("emitting again");
     io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-  })
+  }, 1*1000);
+  // set timeout to clear interval after 10 seconds.
+  setTimeout(function () {
+    console.log("clearing interval");
+    clearInterval(intrvl);
+  }, 10*1000);
+
+  // fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
+  //   io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
+  // })
 
 }
